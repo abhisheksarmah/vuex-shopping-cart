@@ -1,6 +1,8 @@
 import shop from "@/api/shop";
 
 export default {
+    namespaced: true,
+
     state: {
         // {id,quantity}
         items: [],
@@ -55,9 +57,10 @@ export default {
             state,
             getters,
             commit,
-            rootState
+            rootState,
+            rootGetters
         }, product) {
-            if (getters.productIsInStock(product)) {
+            if (rootGetters['products/productIsInStock'](product)) {
                 // find cartitem
                 const cartItem = state.items.find(item => item.id == product.id);
                 if (!cartItem) {
@@ -67,7 +70,13 @@ export default {
                     // increment item quantity
                     commit('incrementItemQuantity', cartItem);
                 }
-                commit('decrementProductInventory', product);
+                /**
+                 * to dispatch actions, or commit mutations starting from the global namespace,
+                 * we have to pass root:true  as the 3rd argument to dispatch and commit
+                 */
+                commit('products/decrementProductInventory', product, {
+                    root: true
+                });
             }
         },
 

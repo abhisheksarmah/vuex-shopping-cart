@@ -31,18 +31,34 @@ export default {
 	// 	}
 	// }
 	computed: {
-		...mapGetters({
+		// ...mapGetters({
+		// 	products: "cart/cartProducts",
+		// 	total: "cart/cartTotal"
+		// }),
+
+		/**
+		 * above gets verbose when we have lots of getters,
+		 * fortunately, we can pass module namespace as the first argument to
+		 */
+		...mapGetters("cart", {
 			products: "cartProducts",
 			total: "cartTotal"
 		}),
-		...mapState({
-			checkoutStatus: state => state.cart.checkoutStatus
+		/**
+		 * we can also combine getters from different module by using a different mapGetters with passing its namespace as argument
+		 */
+		// ...mapGetters("product", {
+		// 	productIsInStock: "productIsInStock"
+		// }),
+		/**
+		 * The similarly same applies for the mapActions, mapState, mapMutations
+		 */
+		...mapState("cart", {
+			checkoutStatus: state => state.checkoutStatus
 		})
 	},
 	methods: {
-		...mapActions({
-			checkOut: "checkOut"
-		})
+		...mapActions("cart", ["checkOut"])
 	}
 };
 </script>

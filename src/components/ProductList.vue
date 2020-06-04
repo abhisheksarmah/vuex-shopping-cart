@@ -46,10 +46,10 @@ export default {
 	// 	// }
 	// }),
 	computed: {
-		...mapState({
-			products: state => state.products.items
+		...mapState("products", {
+			products: state => state.items
 		}),
-		...mapGetters({
+		...mapGetters("products", {
 			productIsInStock: "productIsInStock"
 		})
 	},
@@ -68,8 +68,8 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			fetchProducts: "fetchProducts",
-			addProductToCart: "addProductToCart"
+			fetchProducts: "products/fetchProducts",
+			addProductToCart: "cart/addProductToCart"
 		})
 		// addProductToCart(product) {
 		// 	this.$store.dispatch("addProductToCart", product);
