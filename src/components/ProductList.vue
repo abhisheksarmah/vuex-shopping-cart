@@ -8,7 +8,7 @@
 		>
 		<ul v-else>
 			<li
-				v-for="product in allProducts"
+				v-for="product in products"
 				:key="product.id"
 			>
 				{{ product.title }} - {{ product.price | currency}} - {{product.inventory}}
@@ -47,7 +47,7 @@ export default {
 	// }),
 	computed: {
 		...mapState({
-			allProducts: "products"
+			products: state => state.products.items
 		}),
 		...mapGetters({
 			productIsInStock: "productIsInStock"
