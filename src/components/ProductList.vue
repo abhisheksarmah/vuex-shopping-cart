@@ -8,7 +8,7 @@
 		>
 		<ul v-else>
 			<li
-				v-for="product in products"
+				v-for="product in allProducts"
 				:key="product.id"
 			>
 				{{ product.title }} - {{ product.price | currency}} - {{product.inventory}}
@@ -22,31 +22,58 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
 export default {
 	data() {
 		return {
 			loading: false
+			// if we want a specific product, that we knew its array index in the component
+			// productIndex: 1
 		};
 	},
+	// when using mapstate's argument as array, components computed properties will have the same name as state properties
+	// computed: mapState(["products"]),
+	// if we wanted a different computed property name then we could use objects
+	// computed: mapState({
+	// 	allProducts: "products"
+	// 	// we could also use function as value instead of string
+	// 	// allProducts: state => state.products,
+	// 	// firstProduct: state => state.products[0]
+	// 	// we need to access local data, using this, we have to use a normal function instead of an arrow function.
+	// 	// specificProduct(state) {
+	// 	// 	return state.products[this.productIndex]
+	// 	// }
+	// }),
 	computed: {
-		products() {
-			return this.$store.state.products;
-		},
-
-		productIsInStock() {
-			return this.$store.getters.productIsInStock;
-		}
+		...mapState({
+			allProducts: "products"
+		}),
+		...mapGetters({
+			productIsInStock: "productIsInStock"
+		})
 	},
+	// computed: {
+	// 	products() {
+	// 		return this.$store.state.products;
+	// 	},
+
+	// 	productIsInStock() {
+	// 		return this.$store.getters.productIsInStock;
+	// 	}
+	// },
 	created() {
 		this.loading = true;
-		this.$store
-			.dispatch("fetchProducts")
-			.then(() => (this.loading = false));
+		this.fetchProducts().then(() => (this.loading = false));
 	},
 	methods: {
-		addProductToCart(product) {
-			this.$store.dispatch("addProductToCart", product);
-		}
+		...mapActions({
+			fetchProducts: "fetchProducts",
+			addProductToCart: "addProductToCart"
+		})
+		// addProductToCart(product) {
+		// 	this.$store.dispatch("addProductToCart", product);
+		// }
 	}
 };
 </script>
