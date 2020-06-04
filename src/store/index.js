@@ -1,15 +1,29 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex from 'vuex';
+import Vue from 'vue';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
+// initiate the vuex store constructor
 export default new Vuex.Store({
-  state: {
+  state: { // data
+    products: []
   },
-  mutations: {
+  getters: { // computed properties
+    productsCount() {
+      // ..
+    }
   },
-  actions: {
+  actions: { // methods
+    fetchProducts() {
+      // make the call
+      // run set product mutation
+    }
   },
-  modules: {
+
+  mutations: { // responsible for setting and updating the state
+    setProducts(state, products) {
+      // update products 
+      state.products = products;
+    }
   }
-})
+});
